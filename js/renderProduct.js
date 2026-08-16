@@ -1,8 +1,10 @@
 import { fetchProducts } from "../api/products.js";
-import { searchProducts} from "../api/searchProduct.js";
+import { searchProducts } from "../api/searchProduct.js";
 
 const myInput = document.getElementById("myInput");
 const productContainer = document.getElementById("productsContainer");
+
+let debounceTimer;
 
 
 export function renderProducts(products) {
@@ -86,12 +88,17 @@ async function initProduct() {
 await initProduct()
 
 myInput.addEventListener("input", async () => {
+  clearTimeout(debounceTimer);
   const query = myInput.value.trim();
 
-  if (!query) {
-    initProduct();
+  debounceTimer = setTimeout(async () => {
+    if (!query) {
+    await initProduct();
+    return
   }
 
   const products = await searchProducts(query);
-  renderProducts(products); 
-})
+  renderProducts(products);
+
+  }, 500);
+});
