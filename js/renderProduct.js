@@ -82,4 +82,4 @@ async function initProduct() {
     
   }
 
-initProduct()
+await initProduct()

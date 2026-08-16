@@ -1,6 +1,6 @@
-export async function fetchProducts() {
+export async function searchProducts(id) {
   try {
-    const response = await fetch("https://dummyjson.com/products", {
+    const response = await fetch(`https://dummyjson.com/products/search?q=${id}`, {
       method: "GET",
     });
 
