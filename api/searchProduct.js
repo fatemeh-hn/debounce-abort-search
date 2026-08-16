@@ -1,7 +1,7 @@
-export async function searchProducts(query) {
+export async function searchProducts(query , mySignal) {
   try {
     const response = await fetch(`https://dummyjson.com/products/search?q=${query}`, {
-      method: "GET",
+      method: "GET", signal: mySignal,
     });
 
     const result = await response.json();
@@ -9,6 +9,11 @@ export async function searchProducts(query) {
     return result.products;
 
   } catch (error) {
+    if (error.name === "AbortError") {
+      console.log("Previous search was cancelled");
+      return [];
+    }
+
     console.log(error);
   }
 }

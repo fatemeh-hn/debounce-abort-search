@@ -5,6 +5,7 @@ const myInput = document.getElementById("myInput");
 const productContainer = document.getElementById("productsContainer");
 
 let debounceTimer;
+let searchController;
 
 
 export function renderProducts(products) {
@@ -93,12 +94,15 @@ myInput.addEventListener("input", async () => {
 
   debounceTimer = setTimeout(async () => {
     if (!query) {
-    await initProduct();
-    return
-  }
+      await initProduct();
+      return
+    }
 
-  const products = await searchProducts(query);
-  renderProducts(products);
+    searchController?.abort();
+    searchController = new AbortController();
+
+    const products = await searchProducts(query , searchController.signal);
+    renderProducts(products);
 
   }, 500);
 });
